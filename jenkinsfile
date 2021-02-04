@@ -12,7 +12,6 @@ pipeline {
                      sh 'rsync -avh -e "ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/Test123.pem" /var/lib/jenkins/workspace/second-job-pipeline/ ec2-user@10.0.1.17:/chatapp/'
                      sh 'ssh -i /var/lib/jenkins/Test123.pem  ec2-user@10.0.1.17 sudo systemctl stop django.service'
 	             sh 'ssh -i /var/lib/jenkins/Test123.pem  ec2-user@10.0.1.17 sudo systemctl start django.service'
-		     sh 'ssh -i /var/lib/jenkins/Test123.pem  ec2-user@10.0.1.17 sudo python3/chatapp/fundoo/manage.py runserver 0.0.0.0:8000'
 '
          }
        }
