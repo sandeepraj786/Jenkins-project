@@ -6,6 +6,24 @@ pipeline {
 		    git 'https://github.com/sandeepraj786/chatapp.git'
 		 }
 	    }
+	    
+	    stage('Code Analysis') {
+    environment {
+        scannerHome = tool 'sonar-scanner';
+    }
+             steps {
+        withSonarQubeEnv('sonarqube-server') {
+            sh "${scannerHome}/opt/sonar-scanner"
+        }
+	
+	timeout(time: 5, unit: 'MINUTES') {
+            waitForQualityGate abortPipeline: true
+	    }
+	  }
+	}
+		    
+         
+	 
             
             stage('build') {
                steps {
