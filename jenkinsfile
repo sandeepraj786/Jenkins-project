@@ -7,24 +7,25 @@ pipeline {
 		 }
 	    }
 	    
-	    stage('Code Analysis') {
-    environment {
-        scannerHome = tool 'sonar-scanner';
-    }
-             steps {
-        withSonarQubeEnv('sonarqube-server') {
-            sh "${scannerHome}/bin/sonar-scanner"
-        }
-	
-	timeout(time: 5, unit: 'MINUTES') {
-            waitForQualityGate abortPipeline: true
+		    stage('Code Analysis') {
+	    environment {
+		scannerHome = tool 'sonar-scanner';
 	    }
+			     steps {
+		withSonarQubeEnv('sonarqube-server') {
+		    sh "${scannerHome}/bin/sonar-scanner"
+		}
 	  }
+   }
+		stage("Quality gate"){
+		steps{
+		waitForQualityGate abortPipeline: true
+		}
 	}
-		    
-         
-	 
-            
+            	
+	    
+	  
+	
             stage('build') {
                steps {
                      sh 'rsync -avh -e "ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/Test123.pem" --exclude .git /var/lib/jenkins/workspace/second-job-pipeline/ ec2-user@10.0.1.17:/chatapp/'
